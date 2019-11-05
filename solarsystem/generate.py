@@ -74,7 +74,6 @@ if __name__ == "__main__":
     plt.close('all')
     fig = plt.figure(figsize=(8,8))
     ax = plt.subplot(1,1,1)
-    ax.set_facecolor('black')
     ax.set_xlim(-ext,ext)
     ax.set_ylim(-ext,ext)
     ax.set_aspect('equal')
@@ -87,8 +86,9 @@ if __name__ == "__main__":
       if plot_orbits:
         plot_orbit(ax, j)
     ofname = "imgs/{0:04d}.png".format(i)
-    plt.savefig(ofname, bbox_inches="tight")
+    plt.box(False)
+    plt.savefig(ofname, bbox_inches='tight', facecolor='black')
     images.append(imageio.imread(ofname))
 
-  imageio.mimsave('movie.gif', images)
+  imageio.mimsave("movie.gif", images)
 
