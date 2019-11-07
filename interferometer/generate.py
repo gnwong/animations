@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
   images = []
 
-  pulses = [ 5, 25 ]
+  pulses = [ 5 ]
 
   for i in range(nframes):
 
@@ -84,8 +84,8 @@ if __name__ == "__main__":
     # format other plots
     ax1.set_ylim(-0.2,1.2)
     ax2.set_ylim(-0.2,1.2)
-    ax1.set_xlim(0,100)
-    ax2.set_xlim(0,100)
+    ax1.set_xlim(0,40)
+    ax2.set_xlim(0,40)
     ax1.set_facecolor('black')
     ax2.set_facecolor('black')
     ax1.set_ylabel('signal (top)',c='#ffffff',fontsize=20)
