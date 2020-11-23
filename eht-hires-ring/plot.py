@@ -21,7 +21,8 @@ import os
 # manually chosen
 VMAX = 0.00085 
 t0 = 4841.01856589023
-show_time = 'days'  # 'days' or 'M'
+show_time = 'M'  # 'days' or 'M'
+overwrite = False
 
 
 if __name__ == "__main__":
@@ -42,7 +43,7 @@ if __name__ == "__main__":
     print("plotting {0:s}".format(fname))
 
     ofname = fname.replace(".h5", ".png")
-    if os.path.exists(ofname):
+    if os.path.exists(ofname) and not overwrite:
       print(" - file exists: skipping")
       continue
 
@@ -97,7 +98,7 @@ if __name__ == "__main__":
 
         # print(I.max(), t, tunit*t)
 
-        time_in_M = "{0:d} M".format(int(t-t0))
+        time_in_M = r"{0:d} GM/c$^3$".format(int(t-t0))
         time_in_days = "{0:.1f} days".format((t-t0)*tunit / 3600/24.)
 
         if show_time == 'M':
