@@ -15,6 +15,7 @@ plt.rc('font', family='serif',size=10)
 import numpy as np
 import h5py
 import sys
+import os
 
 
 # manually chosen
@@ -39,6 +40,11 @@ if __name__ == "__main__":
 
     if fname[-3:] != ".h5": continue
     print("plotting {0:s}".format(fname))
+
+    ofname = fname.replace(".h5", ".png")
+    if os.path.exists(ofname):
+      print(" - file exists: skipping")
+      continue
 
     # load
     hfp = h5py.File(fname,'r')    
@@ -89,7 +95,7 @@ if __name__ == "__main__":
         yoff = dds/2.
         ax.imshow(I, cmap='afmhot', vmin=0., vmax=VMAX, extent=[-dx/2+xoff, dx/2+xoff, -dx/2+yoff, dx/2+yoff])
 
-        print(I.max(), t, tunit*t)
+        # print(I.max(), t, tunit*t)
 
         time_in_M = "{0:d} M".format(int(t-t0))
         time_in_days = "{0:.1f} days".format((t-t0)*tunit / 3600/24.)
@@ -159,5 +165,5 @@ if __name__ == "__main__":
         ax2.set_xlim(4.5, 5.5)
 
     plt.tight_layout(rect=[0, 0, 1, 1])
-    fig.savefig(fname.replace(".h5", ".png"))
+    fig.savefig(ofname)
 
