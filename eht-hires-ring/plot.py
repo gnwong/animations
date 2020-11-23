@@ -11,9 +11,16 @@ $ ffmpeg -framerate 20 -i image%*.png -s:v 1280x720 -c:v libx264 -profile:v high
 
 import matplotlib.pyplot as plt
 plt.rc('text', usetex=True)
+plt.rc('font', family='serif',size=10)
 import numpy as np
 import h5py
 import sys
+
+
+# manually chosen
+VMAX = 0.00085 
+t0 = 4841.01856589023
+show_time = 'days'  # 'days' or 'M'
 
 
 if __name__ == "__main__":
@@ -80,9 +87,17 @@ if __name__ == "__main__":
 
         xoff = 6.*dds
         yoff = dds/2.
-        ax.imshow(I, cmap='afmhot', vmin=0., extent=[-dx/2+xoff, dx/2+xoff, -dx/2+yoff, dx/2+yoff])
+        ax.imshow(I, cmap='afmhot', vmin=0., vmax=VMAX, extent=[-dx/2+xoff, dx/2+xoff, -dx/2+yoff, dx/2+yoff])
 
         print(I.max(), t, tunit*t)
+
+        time_in_M = "{0:d} M".format(int(t-t0))
+        time_in_days = "{0:.1f} days".format((t-t0)*tunit / 3600/24.)
+
+        if show_time == 'M':
+            ax.text(13, 12, time_in_M, color='w', fontsize=32, horizontalalignment='right', bbox=dict(edgecolor='w', alpha=0.))
+        elif show_time == 'days':
+            ax.text(13, 12, time_in_days, color='w', fontsize=32, horizontalalignment='right', bbox=dict(edgecolor='w', alpha=0.))
 
         if False:
             ax.plot(xs,  ys, '-g', lw=0.5)
