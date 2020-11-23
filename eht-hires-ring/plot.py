@@ -5,7 +5,7 @@
 
 $ python plot.py path/to/images/*h5
 
-$ ffmpeg -framerate 8 -i dump%*.png -s:v 1280x720 -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p out.mp4
+$ ffmpeg -framerate 20 -i image%*.png -s:v 1280x720 -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p ../out.mp4
 
 """
 
@@ -36,6 +36,8 @@ if __name__ == "__main__":
     # load
     hfp = h5py.File(fname,'r')    
     dx = hfp['header']['camera']['dx'][()]
+    t = hfp['header']['t'][()]
+    tunit = hfp['header']['units']['T_unit'][()]
     dsource = hfp['header']['dsource'][()]
     lunit = hfp['header']['units']['L_unit'][()]
     fov_muas = dx / dsource * lunit * 2.06265e11
@@ -79,6 +81,8 @@ if __name__ == "__main__":
         xoff = 6.*dds
         yoff = dds/2.
         ax.imshow(I, cmap='afmhot', vmin=0., extent=[-dx/2+xoff, dx/2+xoff, -dx/2+yoff, dx/2+yoff])
+
+        print(I.max(), t, tunit*t)
 
         if False:
             ax.plot(xs,  ys, '-g', lw=0.5)
