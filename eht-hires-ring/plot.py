@@ -17,12 +17,20 @@ import h5py
 import sys
 import os
 
+from scipy.ndimage.filters import gaussian_filter
+
+import ehtplot.color
+
 
 # manually chosen
 VMAX = 0.00085 
 t0 = 4841.01856589023
+t0 = 5357.02
 show_time = 'M'  # 'days' or 'M'
 overwrite = False
+overwrite = "--overwrite" in sys.argv
+blur = 0.5
+blur = None
 
 
 if __name__ == "__main__":
@@ -42,7 +50,13 @@ if __name__ == "__main__":
     if fname[-3:] != ".h5": continue
     print("plotting {0:s}".format(fname))
 
-    ofname = fname.replace(".h5", ".png")
+    ofname = os.path.basename(fname.replace(".h5", ".png"))
+
+    if blur is not None and blur > 0:
+        ofname = "imgs/blur_" + ofname
+    else:
+        ofname = "imgs/" + ofname
+
     if os.path.exists(ofname) and not overwrite:
       print(" - file exists: skipping")
       continue
@@ -60,12 +74,18 @@ if __name__ == "__main__":
     if 'evpa_0' in hfp['header']:
       evpa_0 = hfp['header']['evpa_0'][()]
     unpol = np.copy(hfp['unpol']).transpose((1,0))
-    imagep = np.copy(hfp['pol']).transpose((1,0,2))
-    I = imagep[:,:,0]
-    Q = imagep[:,:,1]
-    U = imagep[:,:,2]
-    V = imagep[:,:,3]
+    #imagep = np.copy(hfp['pol']).transpose((1,0,2))
+    #I = imagep[:,:,0]
+    #Q = imagep[:,:,1]
+    #U = imagep[:,:,2]
+    #V = imagep[:,:,3]
     hfp.close()
+
+    I = unpol
+
+    if blur is not None and blur > 0.:
+        print("blurring to " + str(blur))
+        I = gaussian_filter(I, blur, truncate=3)
 
     # get critical curve
     a = bhspin = 0.9375
@@ -83,10 +103,12 @@ if __name__ == "__main__":
 
     plt.close('all')
 
+    facecolor = ehtplot.color.ctab.get_cmap('afmhot_10us')(0)
+
     if True:
 
         figside = 10
-        fig = plt.figure(figsize=(figside, figside), facecolor='k')
+        fig = plt.figure(figsize=(figside, figside), facecolor=facecolor)
         ax = plt.subplot(1, 1, 1)
 
         nx, ny = I.shape
@@ -94,7 +116,7 @@ if __name__ == "__main__":
 
         xoff = 6.*dds
         yoff = dds/2.
-        ax.imshow(I, cmap='afmhot', vmin=0., vmax=VMAX, extent=[-dx/2+xoff, dx/2+xoff, -dx/2+yoff, dx/2+yoff])
+        ax.imshow(I, cmap='afmhot_10us', vmin=0., vmax=VMAX, extent=[-dx/2+xoff, dx/2+xoff, -dx/2+yoff, dx/2+yoff], interpolation='none')
 
         # print(I.max(), t, tunit*t)
 
@@ -116,6 +138,9 @@ if __name__ == "__main__":
         elif False:
             ax.set_xlim(0, 1)
             ax.set_ylim(4.25, 5.25)
+
+        ax.set_xlim(-15, 15)
+        ax.set_ylim(-15, 15)
 
         # make the axes white
         acolor = 'w'
