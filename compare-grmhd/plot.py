@@ -20,7 +20,7 @@ import os
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif',size=10)
 
-log = False
+log = True
 res = 512
 mad_dir = "/data/bh-bd3/eht/GRMHD/MAD/a+0.94/384x192x192_IHARM/dumps/"
 sane_dir = "/data/bh-bd3/eht/GRMHD/SANE/a+0.94/288x128x128_IHARM/dumps/"
@@ -143,8 +143,10 @@ def make_frame(frame):
     plot_on(ax1, mad_dir + "dump_{0:08d}.h5".format(frame), time)
     plot_on(ax2, sane_dir + "dump_{0:08d}.h5".format(frame), time)
 
-    #add_cbar(ax2, -2, 0, plt.cm.turbo, r'log$_{10}$ density', labelpad=7)
-    add_cbar(ax2, 0, 1, plt.cm.turbo, r'density (arbitrary units)', ticks=[0,0.2,0.4,0.6,0.8,1.], ticklabels=[], labelpad=7)
+    if log:
+        add_cbar(ax2, -2, 0, plt.cm.turbo, r'log$_{10}$ density', labelpad=7, ticks=[-2,-1.5,-1,-.5,0], ticklabels=["-2.0", "-1.5", "-1.0", "-0.5", "0.0"])
+    else:
+        add_cbar(ax2, 0, 1, plt.cm.turbo, r'density (arbitrary units)', ticks=[0,0.2,0.4,0.6,0.8,1.], ticklabels=[], labelpad=7)
 
     ax2.set_yticklabels([])
     ax1.tick_params(axis='both', labelsize=14)
