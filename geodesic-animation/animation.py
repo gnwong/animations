@@ -283,9 +283,6 @@ def plot_frame(index, spin, massfrac, count, doplot=True):
         # create figure
         plt.close('all')
 
-        #if nobg:
-        #    plt.figure(figsize=(8, 8), facecolor='w')
-        #else:
         fig = plt.figure(figsize=(8, 9), facecolor=bgcolor)
 
         ax1 = plt.subplot(1, 1, 1)
@@ -294,7 +291,6 @@ def plot_frame(index, spin, massfrac, count, doplot=True):
             y = ys[i]
             r = x*x+y*y
             color = color_inf
-            #color = '#ccc'
             zorder = 10
             if r[-1] < 20:
                 color = color_hit
@@ -302,27 +298,15 @@ def plot_frame(index, spin, massfrac, count, doplot=True):
             ax1.plot(y, -x, lw=1, c=color, zorder=zorder)
    
         # left black boundary
-        #ax1.plot(yes[1], -xes[1], c='w', lw=1, zorder=7)
-        #if not nobg:
         plot_background_above(yes[1], -xes[1], dark_bgcolor, ax1)
 
         # right black boundary
-        #ax1.plot(yes[3], -xes[3], c='w', lw=1, zorder=7)
-        #if not nobg:
         plot_background_above(yes[3], -xes[3], dark_bgcolor, ax1)
         if index < 4:
             plot_reds_pre(yes[1], -xes[1], yes[3], -xes[3], '#000', ax1)
-            #plot_reds_pre(yes[1], -xes[1], yes[3], -xes[3], dark_bgcolor, ax1)
 
         orient_up = False
-        #ax1.plot(yes[0], -xes[0], c='w', lw=1, zorder=7)
-        #ax1.plot(yes[2], -xes[2], c='w', lw=1, zorder=7)
-        #if not nobg:
         if index < 230:
-            #plot_reds_pre(yes[0], -xs[0], hit_bgcolor, ax1) 
-            #plot_reds_pre(yes[2], -xs[2], hit_bgcolor, ax1) 
-            #ax1.fill_betweenx(yes[0], -xs[0], -xs[2], color=hit_bgcolor)
-            #print(-xs[0].shape, -xs[2].shape)
             plot_reds_pre(yes[0], -xes[0], yes[2], -xes[2], hit_bgcolor, ax1)
         else:
             plot_background_above(yes[0], -xes[0], hit_bgcolor, ax1, offset=3)
@@ -341,12 +325,9 @@ def plot_frame(index, spin, massfrac, count, doplot=True):
         ax1.set_xlim(-tlim, tlim)
         ax1.set_ylim(-tlim, tlim)
         ax1.set_aspect('equal')
-        #ax1.set_xlabel(r'$x\ c^2/GM$', fontsize=22)
-        #ax1.set_ylabel(r'$y\ c^2/GM$')
         plt.tight_layout(rect=[0, -0.1, 1, 0.8])
 
         ax1.set_facecolor(face_bgcolor)
-        #ax1.set_facecolor('#000000')
 
         ax1.spines['bottom'].set_color(acolor)
         ax1.spines['left'].set_color(acolor)
@@ -368,9 +349,6 @@ def plot_frame(index, spin, massfrac, count, doplot=True):
         fig.text(0.58, 0.955, "spin", fontsize=32, ha='right', va='center')
         draw_progress_bar(fig, 0.6,0.94, 0.96, 0.98, spin)
 
-        #fig.text(0.25, 0.95, "GR: {0:d}\%".format(int(100*massfrac)), fontsize=32, ha='center')
-        #fig.text(0.75, 0.95, "spin: {0:.2}".format(spin), color='k', fontsize=32, ha='center')
-
         plt.tight_layout(rect=[0, 0, 1, 1])
         if nobg:
             plt.savefig("imgs/frame_{0:05d}_{1:04d}.png".format(index, ogfade))
@@ -381,8 +359,6 @@ def plot_frame(index, spin, massfrac, count, doplot=True):
 if __name__ == "__main__":
 
     count = 141
-    #count = 281
-    #count = 561
 
     skip = 1
     nframes_part1 = 401
