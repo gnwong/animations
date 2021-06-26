@@ -6,9 +6,21 @@ import os
 import sys
 from scipy.optimize import brentq
 from scipy.interpolate import interp1d
-from colour import Color
+
+def draw_progress_bar(fig, x0,y0, x1,y1, ratio):
+    from matplotlib import lines
+    import matplotlib.patches as patches
+    x = [x0, x1, x1, x0, x0]
+    y = [y0, y0, y1, y1, y0]
+    line = lines.Line2D(x, y, lw=1., color='k', zorder=10)
+    fig.add_artist(line)
+    rect = patches.Rectangle((x0,y0), (x1-x0)*ratio, y1-y0, 
+            linewidth=1, edgecolor='r', facecolor='r', 
+            transform=fig.transFigure, figure=fig, zorder=9)
+    fig.patches.extend([rect])
 
 def hex_range(c1, c2, count):
+    from colour import Color
     def clamp(x):
         x = int(x * 256)
         return max(0, min(x, 255))
@@ -274,7 +286,7 @@ def plot_frame(index, spin, massfrac, count, doplot=True):
         #if nobg:
         #    plt.figure(figsize=(8, 8), facecolor='w')
         #else:
-        plt.figure(figsize=(8, 10), facecolor=bgcolor)
+        fig = plt.figure(figsize=(8, 9), facecolor=bgcolor)
 
         ax1 = plt.subplot(1, 1, 1)
 
@@ -329,9 +341,9 @@ def plot_frame(index, spin, massfrac, count, doplot=True):
         ax1.set_xlim(-tlim, tlim)
         ax1.set_ylim(-tlim, tlim)
         ax1.set_aspect('equal')
-        #ax1.set_xlabel(r'$x\ c^2/GM$')
+        #ax1.set_xlabel(r'$x\ c^2/GM$', fontsize=22)
         #ax1.set_ylabel(r'$y\ c^2/GM$')
-        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+        plt.tight_layout(rect=[0, -0.1, 1, 0.8])
 
         ax1.set_facecolor(face_bgcolor)
         #ax1.set_facecolor('#000000')
@@ -350,9 +362,16 @@ def plot_frame(index, spin, massfrac, count, doplot=True):
         ax1.set_yticklabels([])
         ax1.set_yticks([])
 
-        #ax1.set_title(str(spin) + " " + str(massfrac))
+        fig.text(0.13, 0.955, "GR", fontsize=32, ha='right', va='center')
+        draw_progress_bar(fig, 0.15,0.94, 0.45, 0.98, massfrac)
 
-        plt.tight_layout(rect=[0.01, 0.01, 1, 1])
+        fig.text(0.58, 0.955, "spin", fontsize=32, ha='right', va='center')
+        draw_progress_bar(fig, 0.6,0.94, 0.96, 0.98, spin)
+
+        #fig.text(0.25, 0.95, "GR: {0:d}\%".format(int(100*massfrac)), fontsize=32, ha='center')
+        #fig.text(0.75, 0.95, "spin: {0:.2}".format(spin), color='k', fontsize=32, ha='center')
+
+        plt.tight_layout(rect=[0, 0, 1, 1])
         if nobg:
             plt.savefig("imgs/frame_{0:05d}_{1:04d}.png".format(index, ogfade))
         else:
