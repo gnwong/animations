@@ -20,6 +20,7 @@ import os
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif',size=10)
 
+log = False
 res = 512
 mad_dir = "/data/bh-bd3/eht/GRMHD/MAD/a+0.94/384x192x192_IHARM/dumps/"
 sane_dir = "/data/bh-bd3/eht/GRMHD/SANE/a+0.94/288x128x128_IHARM/dumps/"
@@ -112,15 +113,21 @@ def add_cbar(tax, vmin, vmax, cmap, label, ticks=None, ticklabels=None, labelpad
 
 def plot_on(ax, fname, time, tlim=15):
     interpd = get_or_make_cache(fname, tlim, res)
-    #pdata = np.log10(interpd)
-    pdata = interpd
 
     if "MAD" in fname:
         vmax = mad_interp(time)
     elif "SANE" in fname:
         vmax = sane_interp(time)
 
-    ax.imshow(pdata, extent=[-tlim,tlim,-tlim,tlim], cmap='turbo', vmax=vmax) 
+    pdata = interpd
+    vmin = 0
+    if log:
+        pdata = np.log10(interpd / vmax)
+        vmax = 0
+        vmin = -2
+
+    ax.imshow(pdata, extent=[-tlim,tlim,-tlim,tlim], cmap='turbo', vmin=vmin, vmax=vmax) 
+
     add_blackhole(ax, 0.9375)
 
 def make_frame(frame):
@@ -136,23 +143,27 @@ def make_frame(frame):
     plot_on(ax1, mad_dir + "dump_{0:08d}.h5".format(frame), time)
     plot_on(ax2, sane_dir + "dump_{0:08d}.h5".format(frame), time)
 
-    add_cbar(ax2, -5, 0, plt.cm.turbo, r'log$_{10}$ density', labelpad=5)
+    #add_cbar(ax2, -2, 0, plt.cm.turbo, r'log$_{10}$ density', labelpad=7)
+    add_cbar(ax2, 0, 1, plt.cm.turbo, r'density (arbitrary units)', ticks=[0,0.2,0.4,0.6,0.8,1.], ticklabels=[], labelpad=7)
 
     ax2.set_yticklabels([])
     ax1.tick_params(axis='both', labelsize=14)
     ax2.tick_params(axis='both', labelsize=14)
 
+    time = (frame-800) * 5
     fig.text(0.57, 0.94, f"${time}$ GM/c$^3$", ha='right', va='center', fontsize=20)
     ax1.set_title("MAD", fontsize=16)
     ax2.set_title("SANE", fontsize=18)
 
     plt.subplots_adjust(wspace=0, hspace=0.01)
-    plt.tight_layout(rect=[0, 0.02, 0.94, 0.96])
+    plt.tight_layout(rect=[0, 0.02, 0.93, 0.96])
     plt.savefig(f'imgs/frame_{frame:08d}.png')
 
 if __name__ == "__main__":
 
     frame = int(sys.argv[1]) 
+
+    print(frame)
 
     make_frame(frame)
 
