@@ -51,12 +51,16 @@ if __name__ == "__main__":
     stride16 = [0, 16]
 
     strides = [0, 8, 0, 8]
-    stride2 = [0, 2, 4, 6]
+    stride2e = [0, 2, 4, 6]
+    stride2o = [1, 3, 5, 7]
 
     for dump in dumps[:-1]:
 
-        for si in stride2:
-            for sj in stride2:
+        if '00004784' not in dump and '00005712' not in dump and '00009424' not in dump and '00011280' not in dump:
+            continue
+
+        for si in stride2o:
+            for sj in stride2o:
 
                 strides[0] = si
                 strides[2] = sj
