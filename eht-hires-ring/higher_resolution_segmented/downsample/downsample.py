@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     ifname = sys.argv[1]
 
-    n_downsamples = 2  # at least 1 to deal with the final stride of 2
+    n_downsamples = 5  # at least 1 to deal with the final stride of 2
 
     print(f' - loading {ifname}')
     ofname = ifname.replace('.h5', '') + f'_{n_downsamples}.npy'
