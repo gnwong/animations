@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 
+import ehtplot
+
 
 def combine_to_smaller(data):
     combined_data = data[::2, ::2]
@@ -33,11 +35,11 @@ if __name__ == "__main__":
         ax1 = plt.subplot(1, 1, 1)
         ax1.imshow(data[::32, ::32].T, cmap='turbo')
 
-        plt.savefig('image.png', dpi=100)
+        plt.savefig('image_a.png', dpi=100)
 
     else:
 
-        n_downsamples = 1  # at least 1 to deal with the final stride of 2
+        n_downsamples = 4  # at least 1 to deal with the final stride of 2
 
         print(f' - loading {ifnames[0]}')
         ofname = ifnames[0].replace('.h5', f'_{n_downsamples}.png')
@@ -57,7 +59,7 @@ if __name__ == "__main__":
         print(' - plotting')
         fig = plt.figure(figsize=(wsize, hsize), facecolor='w')
         ax1 = plt.subplot(1, 1, 1)
-        ax1.imshow(data.T, cmap='turbo')
+        ax1.imshow(data.T, cmap='afmhot_10us', origin='lower')
         ax1.set_position([0, 0, 1, 1])
 
         print(f' - saving {ofname}')

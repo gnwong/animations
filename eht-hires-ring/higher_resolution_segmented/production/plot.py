@@ -51,15 +51,15 @@ if __name__ == "__main__":
     pdata = np.power(imdata, 0.8) * 5.
     pdata += np.power(imdata, 0.32) * 12.
     pdata += np.power(imdata, 3) * 20
-    vmax = np.max(pdata) / np.sqrt(1.1)
+    vmax = np.max(pdata) * np.sqrt(1.1)
 
     print(' - plotting')
     fig = plt.figure(figsize=(wsize, hsize), facecolor='w')
     ax1 = plt.subplot(1, 1, 1)
-    ax1.imshow(pdata[:, ::-1], origin='lower', cmap='afmhot_u', vmin=0, vmax=vmax)
+    ax1.imshow(pdata[:, ::-1], origin='lower', cmap='afmhot', vmin=0, vmax=vmax)
     ax1.set_position([0, 0, 1, 1])
 
     print(' - saving')
-    plt.savefig('cache.png', dpi=100)
+    plt.savefig('cache_afmhot.png', dpi=100)
 
 
