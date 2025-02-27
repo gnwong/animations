@@ -12,6 +12,7 @@ fnames = [
 ]
 
 bfname = "/mnt/lustre/user/gnwong/images/highres/iharm_94_10/combined/"
+bfname = "/Users/gnwong/r/codes/gnwong/animations/eht-hires-ring/higher_resolution_segmented/plot/remote/"
 
 
 if __name__ == "__main__":
