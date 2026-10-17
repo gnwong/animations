@@ -1,0 +1,8 @@
+__pycache__/
+runtime/
+work/
+frames/
+previews/
+*.mp4
+*.vtk
+*.npy

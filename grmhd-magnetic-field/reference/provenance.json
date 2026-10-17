@@ -1,0 +1,33 @@
+{
+  "input_basename": "torus.mhd_w_bcc.01000.bin",
+  "input_size_bytes": 3825253485,
+  "input_header_sha256": "6decb7c01aa50c5cd62a1bd18eceb698cb146d773e5d7100da6e6c3d61de7ade",
+  "time": 10450.0,
+  "spin": 0.9375,
+  "format": "Athena binary 1.1",
+  "coordinates": "Cartesian Kerr-Schild; rg",
+  "reader_wongutils_git_commit": "51135e072b2bf3130fdb8320841f88f7e83b404e",
+  "versions": {
+    "numpy": "1.26.1",
+    "scipy": "1.11.3",
+    "Pillow": "10.1.0",
+    "vtk": "9.3.0",
+    "tqdm": "4.65.0",
+    "reader_sha256": "6c2e3ebb99a0b7411e8c08ef8a2be9f8a45bec1171ec8cd60503efc9fa68fc59",
+    "meshblocks_sha256": "9232ea5576b84a52ff2034536af11315cab44e8af02a3d24a0a1392f73837041"
+  },
+  "accepted_square_sha256": "4e0bb933bd9cf4ad314dd4084c59ca9b1c24138ab0fad49ea67ba56536f566a6",
+  "dimensions": [
+    1600,
+    1600
+  ],
+  "settings_file": "settings.json",
+  "style": "96 native field branches, current outer palette, feathered disk, 10 degree tilt, full 3D occlusion",
+  "footpoint_motion": {
+    "mode": "rotate",
+    "law": "Omega_F=Omega_H/2; phi=phi0+Omega_F*(header_time-10450)",
+    "prescription_source": "splash_rendering/visit/make_image_for.py",
+    "source_sha256": "2678f03f3e979c323b19839d575abebfde7e92c40b3939fd2a56bdd424396287",
+    "note": "Original rotation law, accepted ring seed geometry; not fluid advection"
+  }
+}

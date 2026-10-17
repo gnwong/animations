@@ -1,0 +1,65 @@
+{
+  "dimensions": [
+    1600,
+    1600
+  ],
+  "pixel_max_error": 0,
+  "pixel_mean_error": 0.0,
+  "changed_pixel_fraction": 0.0,
+  "missing_traces": [],
+  "visible_trace_count": 96,
+  "depth_peeling_used": true,
+  "native_binary_to_final": true,
+  "sampling_grid": [
+    401,
+    401,
+    401
+  ],
+  "output_grid": [
+    1600,
+    1600
+  ],
+  "unit_tests_passed": 7,
+  "unit_tests": [
+    "native binary component/axis order",
+    "plan/schedule CLI",
+    "shortest-angle interpolation",
+    "time-spaced unique selection",
+    "stable IDs with missing branches",
+    "rotating-footpoint law/reference/period/direction",
+    "rotated positions reach native-field stream tracer"
+  ],
+  "real_snapshot_batch_render_passed": true,
+  "matching_batch_resume_passed": true,
+  "coarse_grid_smoke_passed": true,
+  "local_OpenGL_doctor_passed": true,
+  "local_render_backend": "VTK 9.3.0 / X11 / NVIDIA GPU",
+  "remote_headless_status": "Not tested on remote hardware; doctor and headless setup instructions included",
+  "versions": {
+    "numpy": "1.26.1",
+    "scipy": "1.11.3",
+    "Pillow": "10.1.0",
+    "vtk": "9.3.0",
+    "tqdm": "4.65.0",
+    "reader_sha256": "6c2e3ebb99a0b7411e8c08ef8a2be9f8a45bec1171ec8cd60503efc9fa68fc59",
+    "meshblocks_sha256": "9232ea5576b84a52ff2034536af11315cab44e8af02a3d24a0a1392f73837041"
+  },
+  "relocated_package_tests_passed": true,
+  "old_paper_workspace_hidden_during_relocation_test": true,
+  "rotating_footpoints_enabled_by_default": true,
+  "rotating_seed_positions_tested_in_actual_stream_tracer": true,
+  "quarter_turn_full_period_retrograde_zero_spin_and_fixed_mode_tested": true,
+  "rotating_reference_pixel_max_error": 0,
+  "seed_motion": {
+    "mode": "rotate",
+    "time": 10450.0,
+    "spin": 0.9375,
+    "omega_h": 0.34774118790566594,
+    "omega_f": 0.17387059395283297,
+    "reference_time": 10450.0,
+    "phase_at_reference": 0.0,
+    "phase_unwrapped_radians": 0.0,
+    "phase_radians": 0.0,
+    "prescription": "phi=phi0+phase_at_reference+fraction*Omega_H*(header_time-reference_time)"
+  }
+}

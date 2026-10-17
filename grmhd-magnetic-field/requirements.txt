@@ -1,0 +1,6 @@
+# Tested with Python 3.11.5. wongutils is supplied by the user's environment.
+numpy==1.26.1
+scipy==1.11.3
+Pillow==10.1.0
+vtk==9.3.0
+tqdm==4.65.0

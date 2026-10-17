@@ -1,0 +1,54 @@
+START HERE IN A NEW CONTEXT
+
+The user wants a portable, minimal GRMHD-bin-to-artwork pipeline for a future
+animation. The square reference and settings.json are the accepted baseline.
+This directory is independent of the old paper/outreach directory. wongutils
+is intentionally external: the user says it exists wherever this will run.
+
+Read README.txt and QUALITY_CRITERIA.txt, then run doctor and tests.py in the
+remote Python environment. Linux headless is the target. The local reference
+was made with VTK 9.3.0, X11/OpenGL, and an NVIDIA GPU. A remote headless setup
+must be checked on its own; an installed VisIt does not verify this renderer.
+
+Accepted decisions
+  - Current warm-gray outer palette, not the bluer alternatives.
+  - 96 native field traces, two-sided, with stable seed/direction selection.
+  - Moving footpoints: rotate the seed pattern with Omega_F=Omega_H/2 using
+    actual header time; phase is anchored at t=10450 to preserve the reference.
+  - Sharp inner density structure, smoother extended outer flow.
+  - Faded outer surface edges; square framing; slight 10-degree composition tilt.
+  - Full 3D depth-correct rendering, not separately stacked hemispheres.
+  - Conventional bloom, protected horizon, 2x supersampling.
+  - No AI-generated art or copying pixels from the original concept.
+
+Next remote work
+  Identify the snapshot directory, binary format, coordinate basis, spin, time
+  range, native fields, simulation cadence, and available memory/GPU backend.
+  The current reader supports AthenaK 1.1 Cartesian Kerr-Schild only. Ask the
+  user before making scientific adapters or changing the visual baseline.
+  Run a real snapshot end-to-end before launching a large job. Compare with the
+  reference for style, but allow genuine morphological differences in new data.
+  Set the global seed reference time/phase intentionally for the new simulation.
+  Do not remove the moving-footpoint law when simplifying or porting this code.
+  Select ~100 keyframes, review them, record settings/notes, and interpolate
+  settings over the actual intermediate snapshots. Review short sequences and
+  refine difficult intervals. No 100-frame sequence has been chosen yet.
+
+Implementation boundaries
+  This is a coordinate-space simulation illustration, not a GRRT image or
+  observer light curve. Sampling and display density filters are separate from
+  unsmoothed native-field tracing. Keep the branch identities fixed if some
+  traces fail; never silently fill the selection with other output-cell IDs.
+  Footpoint rotation is an analytic seeding prescription, not fluid advection.
+  It rotates starting points before tracing the snapshot's actual native field;
+  it does not rotate rendered curves or use movie frame index as physical time.
+  The supplied interpolation operates in simulation time and does not morph
+  images or interpolate the MHD solution. Movie timing for irregular snapshots
+  remains a later explicit choice. Distributed scheduling/movie production is
+  not part of this small starter; disjoint batch index ranges are supported.
+
+Keep the package small
+  Do not import old experimental scripts/sessions, alternate snapshots, GB-scale
+  VTKs/caches, concept art, or unrelated project files. Put generated work and
+  frames outside the source package or in its ignored work/frames directories.
+  Preserve the reference image/provenance and report any visual baseline change.

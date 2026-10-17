@@ -1,0 +1,114 @@
+HOW WE DECIDE WHETHER A FRAME IS GOOD
+
+Use reference/accepted_square.png as the visual reference, not as a texture or
+background to composite into new frames. New structures must come from that
+snapshot's native density and magnetic field. Review both the full-size image
+and a thumbnail. The final choice is visual/scientific judgment; pixel metrics
+are diagnostic cues, not an automatic aesthetic pass/fail score.
+
+1. Magnetic structure is the main story
+   Winding/helicity and the relation to the accretion flow should read clearly.
+   Our chosen compromise was 96 of 128 possible traces. 64 was a little quiet;
+   128 could become visually dominant. Individual curves should be readable,
+   with a coherent bundle rather than an opaque white column or tangled glare.
+   Do not replace actual trajectories with decorative helices.
+
+2. Inner detail remains sharp
+   Preserve the small density structures and bright inner flow that made A
+   preferable to the uniformly softer variants. The outer disk can be smooth
+   without making the center foggy. Avoid block seams, staircase patterns,
+   faceted tubes, broken/dashed thin curves, or sharpening halos.
+   Supersampling should preserve continuous field-line coverage.
+
+3. Extended flow fades naturally
+   Avoid a hard cylindrical/radial data boundary. The initial truncated VTK
+   created a cut edge; sample a sufficiently wide physical region instead.
+   Preserve meaningful extended flow, but fade it before the sampling box ends.
+   Our chosen outer feathering reduces grazing contour silhouettes. Some
+   contour structure is acceptable; obvious nested plastic shells are not.
+   The tested outer-volume alternative lost too much extended flow at its
+   settings and was not selected. Stronger blur everywhere also lost detail.
+
+4. Depth is calculated in 3D
+   User strongly preferred the depth-correct reference to below/disk/above
+   image stacking. The disk, horizon, and field tubes must be rendered together
+   with working depth peeling. Foreground/background overlap and attenuation
+   through translucent flow must make spatial sense. Do not substitute the
+   earlier hemisphere stack as the production default.
+
+5. Horizon and brightness hierarchy stay legible
+   The small dark horizon should remain identifiable within the bright center.
+   The projected horizon mask protects it from bloom. Keep the inner glow
+   luminous without washing out all detail, whitening the entire field base,
+   or lifting the background to gray. Glow should come from rendered structures.
+
+6. Palette separates the components
+   Accepted: gold/orange inner flow, warmer gray/silver outer disk, blue-white
+   field lines against a nearly black navy background. We checked subtly to
+   substantially bluer outer palettes and retained the current one because
+   it separates the disk from the field better. outer_blue=0 is the baseline.
+   Colors/opacity are illustrative and should not be described as measured
+   temperature, emissivity, polarization, or observed intensity.
+
+7. Composition supports the science
+   Square was preferred after checking portrait, inverse landscape, 16:9, 9:16.
+   The slight 10-degree diagonal restores movement from the concept without
+   becoming a large compositional gimmick. It is a roll of the whole view,
+   not a physical field/disk misalignment. Keep the center stable, leave the
+   flow room, and avoid clipping important disk structure unexpectedly.
+   Long field bundles may intentionally continue through the frame edges.
+
+8. Provenance remains scientific and reproducible
+   Native B is resampled/interpolated and integrated, not Gaussian-smoothed.
+   Density smoothing is explicitly display-only and stronger farther out.
+   Record snapshot time/spin, reader hashes, grid, contour/seed settings, camera,
+   selected seed/direction IDs, missing IDs, and final settings beside each PNG.
+   No AI imagery, external concept-art pixels, invented missing data, or lensing
+   claims. Do not combine different simulations/spins as one temporal sequence.
+
+ADDITIONAL CRITERIA FOR ANIMATION
+
+9. Stable display conventions across time
+   Keep grid bounds/resolution, density smoothing policy, contour definitions,
+   seed-pattern layout/rotation law, selection seed/count, palette policy, and image size fixed
+   initially. Do not automatically renormalize each snapshot to its brightest
+   pixel or replace missing selected curves with other curves. Those shortcuts
+   can produce flicker and erase real physical variation. The default density
+   gain is globally .3; adjust globally first if a new run has different units.
+
+10. Stable seed identities do not imply frozen physical field lines
+   Stable IDs are (seed index, integration direction), not mutable VTK cell
+   indices. Some branches can disappear or terminate early; inspect missing_ids
+   and termination behavior. The selected reference has all 96 requested IDs.
+   The seed pattern rotates with Omega_F=Omega_H/2 by default; identities stay
+   attached to the pattern, not to fixed spatial coordinates. Phase must come
+   from actual simulation time, remain continuous through 2*pi, and retain the
+   chosen anchor. Check for rotational aliasing if snapshots are widely spaced.
+   These rotating seeds do not label the same plasma/flux tube across time.
+   This prescription is not fluid-velocity advection of Lagrangian footpoints.
+   Reconnection and changing topology can make traced curves jump. Review
+   neighboring frames, native B, time cadence, and seed placement rather than
+   smoothing or morphing disconnected curves into an invented evolution.
+
+11. The settings evolve smoothly and remain physically neutral
+   Interpolate only the allowed continuous rendering controls. Keep camera
+   movements small and intentional so they do not masquerade as plasma motion.
+   Check azimuth/roll wraparound; the provided interpolation takes the short
+   angular path. Check fades, zoom, opacity, tube width, and bloom at interval
+   midpoints, not only endpoints. Do not interpolate mesh topology or raw field
+   values just to create more movie frames without a separate scientific plan.
+
+12. Review the sequence, not just isolated good frames
+   Start with approximately 100 time-spaced keyframes, then add/replace anchors
+   to cover faint/bright states, extreme disk extents, topology changes, and
+   rapid events. Check that frame order is monotonic in simulation time.
+   Watch short adjacent-frame sequences for popping, exposure pumping, changing
+   shell outlines, line-count changes, and apparent camera jumps. Re-render
+   difficult intervals at full resolution. A good set of keyframes alone does
+   not certify the interpolated sequence.
+
+Record per keyframe
+   Snapshot/time; overrides; reviewed=true/false; notes on field readability,
+   center/horizon detail, outer fade, depth, color balance, framing, missing
+   traces, and neighboring-frame continuity. Reject/adjust with a specific
+   reason rather than chasing the concept's appearance in every snapshot.
