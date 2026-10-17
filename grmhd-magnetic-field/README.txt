@@ -97,6 +97,23 @@ Accepted processing recipe
   emissivity. This is a coordinate-space simulation illustration, not a lensed
   observer image. No AI generation or simulated polarization vectors are added.
 
+Horizon mask and foreground material
+  The opaque horizon geometry handles occlusion in the full 3D render. Material
+  in front of it remains visible. No screen-space horizon mask darkens or
+  removes that base image. horizon_contrast is retained only as a deprecated
+  zero-valued setting; nonzero legacy values are rejected.
+  horizon_glow_protection=true controls added, illustrative bloom only. It
+  blocks surrounding glow from filling the silhouette while retaining glow
+  sourced by visible foreground structures inside it. Those sources are known
+  to be foreground because the opaque 3D horizon has already hidden anything
+  behind it. Set the option false to allow all bloom spill across the horizon.
+  This is an artistic bloom control, not a physical observer PSF calculation.
+  The optional *_horizon_mask.png is a silhouette diagnostic, not an instruction
+  to paint a black circle over the finished image. The reference was corrected
+  to preserve foreground brightness; historical masked images remain outside
+  this portable package. For old configs, remove horizon_contrast overrides or
+  set them to 0, then regenerate schedules.
+
 Moving magnetic-field footpoints (enabled by default)
   The original splash_rendering script used Omega_F=Omega_H/2 and phase=Omega_F*t.
   The portable version carries that rotation law onto the accepted 64-seed

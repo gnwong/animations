@@ -16,7 +16,7 @@
     "reader_sha256": "6c2e3ebb99a0b7411e8c08ef8a2be9f8a45bec1171ec8cd60503efc9fa68fc59",
     "meshblocks_sha256": "9232ea5576b84a52ff2034536af11315cab44e8af02a3d24a0a1392f73837041"
   },
-  "accepted_square_sha256": "4e0bb933bd9cf4ad314dd4084c59ca9b1c24138ab0fad49ea67ba56536f566a6",
+  "accepted_square_sha256": "0188b66f5551de0d58e4cec48021290cf2dac123e53f02539066669f00c7196c",
   "dimensions": [
     1600,
     1600
@@ -29,5 +29,7 @@
     "prescription_source": "splash_rendering/visit/make_image_for.py",
     "source_sha256": "2678f03f3e979c323b19839d575abebfde7e92c40b3939fd2a56bdd424396287",
     "note": "Original rotation law, accepted ring seed geometry; not fluid advection"
-  }
+  },
+  "legacy_silhouette_darkened_square_sha256": "4e0bb933bd9cf4ad314dd4084c59ca9b1c24138ab0fad49ea67ba56536f566a6",
+  "horizon_revision": "Foreground-preserving 3D base; foreground-aware added-glow protection; removed silhouette attenuation"
 }

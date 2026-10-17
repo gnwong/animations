@@ -16,7 +16,7 @@ CONTINUOUS = {
         "inclination","azimuth","camera_roll","scale","warm_radius","warm_glow",
         "warm_crisp","cool_glow","gas_glow","color_gain","ambient","diffuse",
         "key","rim","fill","specular","specular_power","opacity","fade_start",
-        "fade_end","horizon_contrast","sharpness","outer_silver","outer_blue")]
+        "fade_end","sharpness","outer_silver","outer_blue")]
 }
 ANGLES = {"render.azimuth","render.camera_roll"}
 

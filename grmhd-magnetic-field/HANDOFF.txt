@@ -18,7 +18,8 @@ Accepted decisions
   - Sharp inner density structure, smoother extended outer flow.
   - Faded outer surface edges; square framing; slight 10-degree composition tilt.
   - Full 3D depth-correct rendering, not separately stacked hemispheres.
-  - Conventional bloom, protected horizon, 2x supersampling.
+  - Conventional bloom, 2x supersampling; horizon protection affects added glow
+    only. Never mask/darken foreground material in the underlying 3D render.
   - No AI-generated art or copying pixels from the original concept.
 
 Next remote work
@@ -42,6 +43,10 @@ Implementation boundaries
   Footpoint rotation is an analytic seeding prescription, not fluid advection.
   It rotates starting points before tracing the snapshot's actual native field;
   it does not rotate rendered curves or use movie frame index as physical time.
+  The horizon silhouette must not be painted over the final beauty image.
+  Foreground light remains intact; optional glow protection retains bloom from
+  visible sources inside the silhouette. The old 75% silhouette darkening was
+  a bug and has been removed. horizon_contrast must stay 0.
   The supplied interpolation operates in simulation time and does not morph
   images or interpolate the MHD solution. Movie timing for irregular snapshots
   remains a later explicit choice. Distributed scheduling/movie production is

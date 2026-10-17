@@ -19,7 +19,7 @@
     1600,
     1600
   ],
-  "unit_tests_passed": 7,
+  "unit_tests_passed": 9,
   "unit_tests": [
     "native binary component/axis order",
     "plan/schedule CLI",
@@ -27,7 +27,9 @@
     "time-spaced unique selection",
     "stable IDs with missing branches",
     "rotating-footpoint law/reference/period/direction",
-    "rotated positions reach native-field stream tracer"
+    "rotated positions reach native-field stream tracer",
+    "horizon mask cannot darken foreground base",
+    "foreground bloom survives horizon glow protection"
   ],
   "real_snapshot_batch_render_passed": true,
   "matching_batch_resume_passed": true,
@@ -61,5 +63,20 @@
     "phase_unwrapped_radians": 0.0,
     "phase_radians": 0.0,
     "prescription": "phi=phi0+phase_at_reference+fraction*Omega_H*(header_time-reference_time)"
-  }
+  },
+  "foreground_base_and_bloom_preservation_tests_passed": true,
+  "horizon_correction": {
+    "raw_3d_image_identical": true,
+    "changed_pixels": 1100,
+    "changed_fraction": 0.0004296875,
+    "changed_bbox": [
+      780,
+      780,
+      819,
+      818
+    ],
+    "max_difference": 147,
+    "mean_difference": 0.018627213541666666
+  },
+  "horizon_reference_revision": "foreground-preserving"
 }

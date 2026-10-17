@@ -37,8 +37,11 @@ are diagnostic cues, not an automatic aesthetic pass/fail score.
    earlier hemisphere stack as the production default.
 
 5. Horizon and brightness hierarchy stay legible
-   The small dark horizon should remain identifiable within the bright center.
-   The projected horizon mask protects it from bloom. Keep the inner glow
+   The small dark horizon should remain identifiable within the bright center,
+   except where genuinely covered by foreground material. Never darken/mask
+   foreground geometry with a flat projected circle. Occlusion is 3D; the
+   silhouette mask affects added glow only and retains foreground-sourced glow.
+   Keep the inner glow
    luminous without washing out all detail, whitening the entire field base,
    or lifting the background to gray. Glow should come from rendered structures.
 

@@ -233,6 +233,13 @@ def display(light):
 
 
 def composite(disk, beauty, mask, cfg):
+    """Preserve the 3D base; horizon protection affects added glow only.
+
+    Within the projected opaque horizon, the 3D renderer has already hidden
+    all material behind it. Visible emission there is foreground emission.
+    Retain its bloom while optionally blocking spill from surrounding pixels.
+    This is an illustrative bloom control, not a physical PSF calculation.
+    """
     base = linear(beauty)
     warm = linear(disk)
     weight = np.clip((warm[...,0]-1.15*warm[...,2])/np.maximum(warm[...,0],.001),0,1)
@@ -240,15 +247,28 @@ def composite(disk, beauty, mask, cfg):
     field = np.maximum(linear(beauty)-linear(disk),0)
     unit = (cfg["height"]/cfg["effect_reference_height"])*(cfg["effect_reference_scale"]/cfg["scale"])*(cfg["effect_reference_width"]/720)
     blur = lambda rgb,r: gaussian_filter(rgb,sigma=(r*unit,r*unit,0),mode="constant")
-    warm_glow = cfg["warm_glow"]*(.30*warm+.8*blur(warm,3)+1.4*blur(warm,11)+1.7*blur(warm,28))
-    crisp = cfg["warm_crisp"]*np.maximum(warm-blur(warm,1.2),0)
-    cool_glow = cfg["cool_glow"]*(.5*blur(field,2)+1.1*blur(field,9)+1.8*blur(field,24))
-    cool_glow *= np.array([.26,.45,1.],dtype=np.float32)
     gas = np.maximum(linear(disk)-linear(np.array([[cfg["background"]]],dtype=np.uint8)),0)*(1-weight[...,None])
-    gas_glow = cfg["gas_glow"]*(.6*blur(gas,5)+1.1*blur(gas,16))
-    protect = mask.max(axis=2,keepdims=True).astype(float)/255
-    light = base+(warm_glow+crisp+cool_glow+gas_glow)*(1-protect)
-    light *= 1-cfg["horizon_contrast"]*protect
+    def glow(warm,field,gas):
+        warm_glow = cfg["warm_glow"]*(.30*warm+.8*blur(warm,3)+1.4*blur(warm,11)+1.7*blur(warm,28))
+        crisp = cfg["warm_crisp"]*np.maximum(warm-blur(warm,1.2),0)
+        cool_glow = cfg["cool_glow"]*(.5*blur(field,2)+1.1*blur(field,9)+1.8*blur(field,24))
+        cool_glow *= np.array([.26,.45,1.],dtype=np.float32)
+        gas_glow = cfg["gas_glow"]*(.6*blur(gas,5)+1.1*blur(gas,16))
+        return warm_glow+crisp+cool_glow+gas_glow
+    added = glow(warm,field,gas)
+    if cfg["horizon_glow_protection"]:
+        protect = mask.max(axis=2,keepdims=True).astype(float)/255
+        added = added*(1-protect)
+        yy,xx = np.nonzero(protect[...,0])
+        if len(yy):
+            region = np.s_[yy.min():yy.max()+1,xx.min():xx.max()+1]
+            coverage = protect[region]
+            # Only this small region has nonzero foreground sources. Constant
+            # zero boundaries give the same Gaussian values inside it as a
+            # full-frame convolution of the masked sources, without that cost.
+            front = glow(warm[region]*coverage,field[region]*coverage,gas[region]*coverage)
+            added[region] += front*coverage
+    light = base+added
     result = Image.fromarray(display(light))
     return result.filter(ImageFilter.UnsharpMask(radius=unit,percent=round(cfg["sharpness"]),threshold=3))
 
@@ -268,6 +288,7 @@ def render(disk, fields, spin, cfg, output, passes=False):
         window.Finalize()
         raise RuntimeError("Depth peeling unavailable: refusing to substitute incorrect occlusion")
     info["window_backend"] = window.GetClassName()
+    info["horizon_mask_policy"] = "Base 3D image never masked/darkened; optional glow-spill protection retains visible foreground glow"
     renderer.RemoveAllViewProps()
     renderer.SetBackground(0,0,0)
     renderer.AddActor(horizon_actor(spin,white=True))

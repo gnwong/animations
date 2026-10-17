@@ -99,6 +99,10 @@ def validate(cfg):
         raise ValueError("Invalid feather weights")
     if any(not 0 <= render[k] <= 1 for k in ("outer_silver", "outer_blue", "horizon_contrast", "occlusion_ratio")):
         raise ValueError("Invalid display blend/occlusion ratio")
+    if render["horizon_contrast"]!=0:
+        raise ValueError("horizon_contrast must be 0: silhouette darkening incorrectly attenuates foreground material")
+    if not isinstance(render.get("horizon_glow_protection"),bool):
+        raise ValueError("Missing/invalid horizon_glow_protection; regenerate older schedules")
     for key in ("warm_glow", "warm_crisp", "cool_glow", "gas_glow", "color_gain", "ambient", "diffuse", "key", "rim", "fill", "specular", "opacity", "sharpness"):
         if render[key] < 0: raise ValueError("Invalid render."+key)
     if len(render["background"]) != 3 or any(not 0 <= x <= 255 for x in render["background"]):

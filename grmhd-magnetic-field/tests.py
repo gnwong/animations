@@ -9,7 +9,7 @@ import vtk
 from vtk.util.numpy_support import numpy_to_vtk
 from common import ROOT, header, read_json, settings, write_json
 from keyframes import choose, interpolate, overrides
-from renderer import stable_curve_ids
+from renderer import composite,stable_curve_ids
 from prepare import fields,prepared_signature,seed_motion,seed_positions
 
 
@@ -48,6 +48,30 @@ a=0.9375
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_horizon_mask_never_darkens_foreground_base(self):
+        cfg = settings()["render"]
+        cfg.update(width=32,height=32,sharpness=0,warm_glow=0,warm_crisp=0,cool_glow=0,gas_glow=0)
+        raw = np.full((32,32,3),[40,60,90],dtype=np.uint8)
+        raw[14:18,14:18] = [180,210,240]
+        masked = composite(raw,raw,np.full_like(raw,255),cfg)
+        unmasked = composite(raw,raw,np.zeros_like(raw),cfg)
+        np.testing.assert_array_equal(masked,unmasked)
+
+    def test_foreground_bloom_survives_horizon_protection(self):
+        cfg = settings()["render"]
+        cfg.update(width=64,height=64,sharpness=0)
+        disk = np.full((64,64,3),cfg["background"],dtype=np.uint8)
+        beauty = disk.copy()
+        disk[30:32,30:32] = [180,100,20]
+        beauty[:] = disk
+        beauty[32:34,33:35] = [210,225,250]
+        mask = np.zeros_like(disk)
+        mask[24:40,24:40] = 255
+        protected = composite(disk,beauty,mask,cfg)
+        cfg["horizon_glow_protection"] = False
+        unprotected = composite(disk,beauty,mask,cfg)
+        np.testing.assert_array_equal(protected,unprotected)
+
     def test_rotating_footpoints_and_reference_anchor(self):
         cfg = settings()
         spin = .9375
